@@ -1,14 +1,20 @@
 #lunaPopup {
-  position: fixed;
-  top: 20%;
-  left: 20%;
-  transform: translate(-20%, -20%);
   background-color: var(--background-primary);
   color: var(--text-normal);
   z-index: 999999;
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 420px;
   height: auto;
+  position: fixed;
+  right: 0;
+}
+
+.flex {
+  display: flex;
+}
+
+#saveTheme {
+  margin-right: 10px;
 }
