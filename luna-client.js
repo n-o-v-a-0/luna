@@ -33,19 +33,31 @@ function openPopup() {
   }
 
   function saveTheme() {
-    var themeUrl = document.getElementById('themeSelect').value;
-    localStorage.setItem('lunaThemeURL', themeUrl);
+    var themeUrl = document.getElementById("themeSelect").value;
+    localStorage.setItem("lunaThemeURL", themeUrl);
     location.reload();
   }
 
-  document.getElementById('saveTheme').addEventListener('click', saveTheme);
+  document.getElementById("saveTheme").addEventListener("click", saveTheme);
 
   loadTheme();
 }
 
 function loadTheme() {
   theme = document.createElement("style");
-  theme.innerHTML = `@import '${lunaThemeURL}';`;
+  fetch(lunaThemeURL)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("something got fucked, but idk what it was.");
+      }
+      return response.text();
+    })
+    .then((cssText) => {
+      theme.innerHTML = cssText;
+    })
+    .catch((error) => {
+      console.error("Error fetching CSS:", error);
+    });
   theme.id = "luna-themesloader";
   document.head.append(theme);
 }
