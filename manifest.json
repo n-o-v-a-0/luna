@@ -1,16 +1,22 @@
 {
   "manifest_version": 3,
   "name": "Luna",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Discord Client Modification originally created by Awsomedog7 on Discord, now being maintained by _nova.1_",
-  "permissions": ["activeTab", "storage", "declarativeNetRequest"],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "declarativeNetRequest",
+    "scripting"
+  ],
   "action": {
     "default_popup": "popup.html"
   },
   "content_scripts": [
     {
       "matches": ["https://discord.com/channels/*"],
-      "js": ["luna-client.js"]
+      "js": ["luna-client.js"],
+      "css": ["luna.css"]
     }
   ]
 }

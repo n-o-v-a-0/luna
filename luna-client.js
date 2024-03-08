@@ -1,6 +1,8 @@
+const lunaThemeURL = localStorage.getItem("lunaThemeURL");
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "F4") {
-    if (!document.getElementById("luna-client-mod-popup")) {
+    if (!document.getElementById("lunaPopup")) {
       openPopup();
     }
   }
@@ -8,114 +10,44 @@ document.addEventListener("keydown", (event) => {
 
 function openPopup() {
   const popup = document.createElement("div");
-  popup.id = "luna-client-mod-popup";
-  popup.style.position = "fixed";
-  popup.style.top = "20%";
-  popup.style.left = "20%";
-  popup.style.transform = "translate(-20%, -20%)";
-  popup.style.backgroundColor = "var(--background-primary)";
-  popup.style.color = "var(--text-normal)";
-  popup.style.zIndex = 999999;
-  popup.style.padding = "20px";
-  popup.style.borderRadius = "5px";
-  popup.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+  popup.id = "lunaPopup";
   popup.innerHTML = `
-<button style="float: right;" id="ifuckedyourmomlastnight" class="button-ejjZWC lookFilled-1H2Jvj colorBrand-2M3O3N sizeSmall-3R2P2p grow-2T4nbg">𝕏</button>
-<img src="https://raw.githubusercontent.com/n-o-v-a-0/lunacdn/main/luna.png" style="float: left; max-width: 50px; border-radius: 50%;">
-<p class="display-lg__20b93">Luna</p>
-<p>no plugins yet</p>
-<label for="themeSelect">Choose a theme:</label>
-    <select id="themeSelect" class="select-Zz0IcO lookFilled-GPyucw">
-        <option value="0" class="option-Uc12mm">None</option>
-        <option value="1" class="option-Uc12mm">Amoled</option>
-        <option value="2" class="option-Uc12mm">Opera GX</option>
-        <option value="3" class="option-Uc12mm">Fluent</option>
-        <option value="4" class="option-Uc12mm">Windows XP</option>
-        <option value="5" class="option-Uc12mm">Purple Sky</option>
-        <option value="6" class="option-Uc12mm">Midnight</option>
-        <option value="7" class="option-Uc12mm">Float</option>
-    </select>
+  <div class="closeButton__34341" aria-label="Close" id="lunaClose"role="button" tabindex="0" style="float: right;"><svg aria-hidden="true" role="img" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg></div>
+<label for="lunaText"><img src="https://raw.githubusercontent.com/n-o-v-a-0/lunacdn/main/luna.png" style="float: left; max-width: 50px;"></label>
+<p class="display-lg__20b93" id="lunaText">Luna</p><br>
+<label for="themeSelect">Enter a theme URL:</label>
+<input class="inputDefault__80165 input_d266e7" placeholder="Your theme link" type="text" id="themeSelect">
+<button type="submit" class="button_afdfd9 lookFilled__19298 colorBrand_b2253e sizeSmall__71a98 grow__4c8a4" id="saveTheme"><div class="contents_fb6220">Save & Reload</div></button><br>
+<div class="banner__79cec tier2__611e8 canceled__4a0b5"><div class="detailsContainer_d19ecf"><div class="details__695f1"><div class="planInfo_cd8cba">Luna will only work if you <a href="https://chromewebstore.google.com/detail/always-disable-content-se/ffelghdomoehpceihalcnbmnodohkibj" target="_blank">have this chrome extension.</a> If you already have it installed and enabled, you can safely ignore this.</div></div></div></div>
     `;
   document.body.appendChild(popup);
 
-  document
-    .getElementById("ifuckedyourmomlastnight")
-    .addEventListener("click", () => {
-      document.getElementById("luna-client-mod-popup").remove();
-    });
+  document.getElementById("lunaClose").addEventListener("click", () => {
+    document.getElementById("lunaPopup").remove();
+  });
 
   const themeSelect = document.getElementById("themeSelect");
 
-  const storedThemeIndex = localStorage.getItem("selectedThemeIndex");
-  if (storedThemeIndex) {
-    themeSelect.value = storedThemeIndex;
-    loadTheme();
+  if (lunaThemeURL) {
+    themeSelect.value = lunaThemeURL;
   }
-  themeSelect.addEventListener("change", function () {
-    const selectedThemeIndex = themeSelect.value;
-    localStorage.setItem("selectedThemeIndex", selectedThemeIndex);
-    loadTheme();
-    document.getElementById("themechangepopup").style.display = "block";
-    const dwqdiqowd = document.querySelectorAll('[class="container-1eFtFS"]');
-    document.getElementById("luna-client-mod-popup").remove();
-    dwqdiqowd.forEach((element) => {
-      element.remove();
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
-  });
+
+  function saveTheme() {
+    var themeUrl = document.getElementById('themeSelect').value;
+    localStorage.setItem('lunaThemeURL', themeUrl);
+    location.reload();
+  }
+
+  document.getElementById('saveTheme').addEventListener('click', saveTheme);
 
   loadTheme();
 }
 
-const storedThemeIndex = localStorage.getItem("selectedThemeIndex");
-
 function loadTheme() {
   theme = document.createElement("style");
-  theme.innerHTML = `@import url('https://raw.githubusercontent.com/n-o-v-a-0/lunacdn/main/themes/${storedThemeIndex}.css');`;
-  theme.id = "luna-themesloader"
+  theme.innerHTML = `@import '${lunaThemeURL}';`;
+  theme.id = "luna-themesloader";
   document.head.append(theme);
 }
 
 loadTheme();
-
-function themeFunc() {
-  const themechangepopup = document.createElement("div");
-
-  themechangepopup.id = "themechangepopup";
-  themechangepopup.style.position = "fixed";
-  themechangepopup.style.top = "50%";
-  themechangepopup.style.left = "50%";
-  themechangepopup.style.transform = "translate(-50%, -50%)";
-  themechangepopup.style.backgroundColor = "var(--background-primary)";
-  themechangepopup.style.color = "var(--text-normal)";
-  themechangepopup.style.zIndex = 9999999;
-  themechangepopup.style.padding = "20px";
-  themechangepopup.style.borderRadius = "5px";
-  themechangepopup.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
-  themechangepopup.style.display = "none";
-  themechangepopup.innerHTML = `
-  <h1 class="display-lg-3SN7Sz">Theme applied</h1>
-  <p>Refreshing...</p>
-  `;
-  document.body.append(themechangepopup);
-}
-
-themeFunc();
-
-setTimeout(() => {
-  const elements = document.querySelectorAll('[aria-label="Send a gift"]');
-
-  elements.forEach((element) => {
-    element.style.visibility = "hidden";
-  });
-}, 10000);
-
-let experiments = false;
-
-if (experiments) {
-  script = document.createElement('script');
-  script.src = ""
-  document.body.append(script)
-}
